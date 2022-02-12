@@ -3,14 +3,14 @@ import PostItem from "./postItem";
 
 // здесь мы принимаем пропсы. поскольку мы знаем, что пропс - это объект
 // необходимо написать его в {} !!!!!!!
-const PostList = ({posts, title}) => {
+const PostList = ({posts, title, remove}) => {
   return (
     <>
       <h1 style={{ textAlign: "center" }}>
           {title}
       </h1>
       {posts.map((post, index) =>
-        <PostItem number={index+1} key={post.id} post={post} />
+        <PostItem remove={remove} number={index+1} key={post.id} post={post} />
       )}
 
       {/*<PostItem post={{ id: 1, title: "JS", body: "Description" }} />
