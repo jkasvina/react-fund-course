@@ -23,6 +23,11 @@
     align-items: center;
 }
 
-.post__btsn {
+.empty_list {
+    text-align: center;
+}
 
+hr {
+    margin: 15px 0;
+    border: 1px solid teal;
 }

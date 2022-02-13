@@ -10,16 +10,18 @@ class ClassCounter extends React.Component {
     this.state = {
       count: 0,
     };
-    // зачем здесь 2 раза привязывается this?????????
-    this.increment = this.increment.bind(this); // без этого ф-я будет возвращать undefined
-    this.decrement = this.decrement.bind(this);
+    // зачем здесь 2 раза привязывается this?
+    // потому что если ф-ии increment и decrement не стрелочные, то они теряют контекст класса, а
+    // this.increment можно представить как имя переменной
+    // this.increment = this.increment.bind(this); // без этого ф-я будет возвращать undefined
+    // this.decrement = this.decrement.bind(this);
   }
 
-  increment() {
+  increment = () => {
     // в классовом компоненте нельзя напрямую изменять состояние this.state.count += 1;
     this.setState({ count: this.state.count + 1 });
   }
-  decrement() {
+  decrement = () => {
     this.setState({ count: this.state.count - 1 });
   }
 

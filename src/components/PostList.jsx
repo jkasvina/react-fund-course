@@ -3,7 +3,7 @@ import PostItem from "./postItem";
 
 // здесь мы принимаем пропсы. поскольку мы знаем, что пропс - это объект
 // необходимо написать его в {} !!!!!!!
-const PostList = ({posts, title, remove}) => {
+const PostList = ({posts, title, remove}) => { // объектная деструктуризация пропса
   return (
     <>
       <h1 style={{ textAlign: "center" }}>
