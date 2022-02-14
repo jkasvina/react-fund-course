@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
 import "./styles/App.css";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
-import MySelect from "./components/UI/select/MySelect";
-import MyInput from "./components/UI/input/MyInput";
+import PostFilter from "./components/PostFilter";
 
 function App() {
-  const [posts, setPosts] = useState([    // деструктуризация [,]
+  const [posts, setPosts] = useState([
+    // деструктуризация [,]
     // зачем здесь useState?? почему не просто массив??
     // потому что мы отслеживаем значение этого массива, он меняется
     { id: 1, title: "JS", body: "Description 3" },
@@ -16,10 +16,11 @@ function App() {
     { id: 3, title: "TS", body: "Description 2" },
   ]);
 
-  const [selectedSort, setSelectedSort] = useState("");
-    const [searchQuery, setSearchQuery] = useState("");
+  // принимает алгоритм сортировки и поисковую строку
+  const [filter, setFilter] = useState({sort: '', query: ''});
 
-  const options = [  // здесь value должно быть равно элементам объектов массива posts!
+  const options = [
+    // здесь value должно быть равно элементам объектов массива posts!
     { value: "title", name: "По названию" },
     { value: "body", name: "По описанию" },
   ];
@@ -39,36 +40,43 @@ function App() {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
 
-  const sortPosts = (value) => {
-      // ф-я sort() не возвращает новый массив, а мутирует исходный массив
-      // состояние напрямую менять нельзя, т.к. тогда при отключении сортировки
-      // не вернётся исходный массив, поэтому мутируем копию массива
-      // localeCompare - сравнение строк, чаще всего используется при сортировках
-      setSelectedSort(value);
-      setPosts([...posts].sort((a, b) => a[value].localeCompare(b[value])));
-  }
+  // const sortPosts = (value) => {
+  //   // ф-я sort() не возвращает новый массив, а мутирует исходный массив
+  //   // состояние напрямую менять нельзя, т.к. тогда при отключении сортировки
+  //   // не вернётся исходный массив, поэтому мутируем копию массива
+  //   // localeCompare - сравнение строк, чаще всего используется при сортировках
+  //   // setSelectedSort(value);
+  //   // setPosts([...posts].sort((a, b) => a[value].localeCompare(b[value])));
+  // };
+
+  // Ф-я в useMemo отрабатывает только тогда,
+  // когда меняется список постов,
+  // либо выбранное значение сортировки.
+  // `Такое поведение называется мемоизация.`
+  const getSortedPosts = useMemo( () => {
+    console.log('Отработала getSortedPosts')
+    if (filter.sort) {
+      return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]));
+    }
+    return posts;
+  }, [filter.sort, posts]);
+
+  const sortedAndSearchedPosts = useMemo( () => {
+      return getSortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
+  }, [filter.query, getSortedPosts])
+
+
 
   return (
     <div className="App">
       {/*<Counter />*/}
-      <ClassCounter />
+      {/*<ClassCounter />*/}
       <PostForm create={createPost} />
       <hr />
-      <div>
-          <MyInput
-          placeholder="Поиск..."
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          />
-        <MySelect
-          value={selectedSort}
-          onChange={sortPosts}
-          defaultValue="Сортировка по..."
-          options={options}
-        />
-      </div>
-      {posts.length ? ( // условная отрисовка с помощью тернарного оператора
-        <PostList title="Список постов 1" posts={posts} remove={removePost} />
+      <PostFilter filter={filter} setFilter={setFilter} options={options}/>
+
+      {sortedAndSearchedPosts.length ? ( // условная отрисовка с помощью тернарного оператора
+        <PostList title="Список постов 1" posts={sortedAndSearchedPosts} remove={removePost} />
       ) : (
         <h1 className="empty_list">Список постов пуст</h1>
       )}
