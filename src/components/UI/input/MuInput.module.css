@@ -4,3 +4,42 @@
     margin: 5px 0;
     border: 1px solid teal;
 }
+
+/* Ангуляровский input на дивах */
+/*.input {*/
+/*    overflow-x: hidden; !* полос прокрутки нет, а работает как со значением scroll*!*/
+/*    white-space: nowrap; !* для того, чтобы текст не переходил на другую строку сам*!*/
+/*    !*height: 40px;*!*/
+/*    width: 100%;*/
+/*    padding: 5px 20px;*/
+/*    max-width: 170px; !* помогает не удлинняться полю ввода*!*/
+/*    !*border-radius: 3px;*!*/
+/*    margin: 5px 0;*/
+/*    border: 1px solid teal;*/
+/*    box-shadow: inset 2px 2px 5px gray, 1px 1px 5px rgba(255, 255, 255, 1);*/
+/*    display: flex; !* позволяет проще управлять расположением элемента на странице *!*/
+/*    align-items: center; !* определяет вертикальное выравнивание всех дочерних элементов по центру родительского. *!*/
+/*    vertical-align: middle; !* и делает текст расположенным вертикально по центру *!*/
+/*    !*padding: 0 5px;*!*/
+/*    box-sizing: border-box; !* свойства width и height включают в себя значения полей и границ, но не отступов (margin) *!*/
+
+/*.&__text {*/
+/*     width: 100%;*/
+/*     outline: none; !* убирает обводку у элемента *!*/
+/*     padding: 0 5px;*/
+/*     box-sizing: border-box;*/
+/*     cursor: text;*/
+/* }*/
+
+/*}*/
+
+/*.disabled {*/
+/*    border: 1px solid #4e4e4e;*/
+/*    background: #bdbcbc;*/
+/*    cursor: not-allowed;*/
+
+/** {*/
+/*    background: #bdbcbc;*/
+/*    pointer-events: none; !* запрещает мыши работу с элементом *!*/
+/*}*/
+/*}*/
