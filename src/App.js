@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
 import "./styles/App.css";
@@ -7,21 +7,41 @@ import PostForm from "./components/PostForm";
 import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/modal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
-import axios from "axios";
+import PostService from "./API/PostService";
+import Loader from "./components/UI/loader/Loader";
+import { getPageCount, getPagesArray } from "./utils/getPageCount";
+import {useFetching} from "./components/hooks/useFetching";
 
 function App() {
   const [posts, setPosts] = useState([
     // деструктуризация [,]
     // зачем здесь useState?? почему не просто массив??
     // потому что мы отслеживаем значение этого массива, он меняется
-    { id: 1, title: "JS", body: "Description 3" },
-    { id: 2, title: "Java", body: "Description 1" },
-    { id: 3, title: "TS", body: "Description 2" },
+    // { id: 1, title: "JS", body: "Description 3" },
+    // { id: 2, title: "Java", body: "Description 1" },
+    // { id: 3, title: "TS", body: "Description 2" },
   ]);
 
   // принимает алгоритм сортировки и поисковую строку
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+
+  const [fetchPosts, isPostsLoading, postError] = useFetching( async () => {
+    const response = await PostService.getAll(limit, page);
+    setPosts(response.data);
+
+    // const TotalCount = response.headers["x-total-count"];
+    //
+    // if (totalPages !== TotalCount) {
+    //   setTotalPages(getPageCount(TotalCount, limit));
+    // }
+
+  })
+
+  let pagesArray = getPagesArray(totalPages);
 
   const options = [
     // здесь value должно быть равно элементам объектов массива posts!
@@ -33,7 +53,7 @@ function App() {
     // изменяем массив posts - передаём ф-ии setPosts новый массив,
     // куда разворачиваем старый массив posts, в который добавим 1 новый пост
     setPosts([...posts, newPost]); // ф-я изменения состояния
-    setModal(false)
+    setModal(false);
     // setPosts([...posts, {...post, id: Date.now()}])
   };
 
@@ -68,28 +88,33 @@ function App() {
     return posts;
   }, [filter.sort, posts]);
 
+  // поиск по значению инпута
   const sortedAndSearchedPosts = useMemo(() => {
     return getSortedPosts.filter((post) =>
       post.title.toLowerCase().includes(filter.query.toLowerCase())
     );
   }, [filter.query, getSortedPosts]);
 
-  async function fetchPosts() {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
-    setPosts(response.data)
-  }
   // как загрузить посты не по кнопке, а при запуске приложения?
-  Жизненный цикл компонента:
-  Монтирование (mount) -> Обновление (update) -> Размонтирование (unmount)
+  // Жизненный цикл компонента:
+  // Монтирование (mount) -> Обновление (update) -> Размонтирование (unmount)
+  useEffect(() => {
+    fetchPosts();
+  }, []); // page
+  // при обновлении страницы данные пропадают, хорошо бы, чтобы лоадер умел это отслеживать
+
+  const changePage = (page) => {
+    setPage(page);
+  };
 
   return (
     <div className="App">
       {/*<Counter />*/}
       {/*<ClassCounter />*/}
-      <MyButton onClick={fetchPosts}>GET POSTS</MyButton>
+      {/*<MyButton onClick={fetchPosts}>GET POSTS</MyButton>*/}
 
-      <MyButton onClick={ () => setModal(true) } style={{marginTop: '4px'}}>
-        Создать пользователя
+      <MyButton onClick={() => setModal(true)} style={{ marginTop: "4px" }}>
+        Создать пост
       </MyButton>
       <MyModal visible={modal} setVisible={setModal}>
         <PostForm create={createPost} />
@@ -99,11 +124,29 @@ function App() {
       <PostFilter filter={filter} setFilter={setFilter} options={options} />
 
       {/*{sortedAndSearchedPosts.length ? ( // условная отрисовка с помощью тернарного оператора*/}
-      <PostList
-        title="Список постов 1"
-        posts={sortedAndSearchedPosts}
-        remove={removePost}
-      />
+      {isPostsLoading ? (
+        <div className="loader-box">
+          {/*<h1>Идёт загрузка...</h1>*/}
+          <Loader />
+        </div>
+      ) : (
+        <PostList
+          title="Список постов"
+          posts={sortedAndSearchedPosts}
+          remove={removePost}
+        />
+      )}
+      {/*<div className="span-box">*/}
+      {/*  {pagesArray.map((p) => (*/}
+      {/*    <span*/}
+      {/*      onClick={changePage(p)}*/}
+      {/*      key={p}*/}
+      {/*      className={page === p ? "page-current" : "span-page"}*/}
+      {/*    >*/}
+      {/*      {p}*/}
+      {/*    </span>*/}
+      {/*  ))}*/}
+      {/*</div>*/}
     </div>
   );
 }

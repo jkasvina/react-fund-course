@@ -1,0 +1,80 @@
+/*.loader {*/
+/*    width: 100px;*/
+/*    height: 100px;*/
+/*    border-radius: 50%;*/
+/*    border: 3px dashed teal;*/
+/*    !* у Ulbi TV всё в порядке, а у меня ошибка*/
+/*    animation: rotate is infinite linear;*!*/
+/*}*/
+
+/* крутилки
+https://projects.lukehaas.me/css-loaders/*/
+
+.loader,
+.loader:before,
+.loader:after {
+    border-radius: 50%;
+    width: 2.5em;
+    height: 2.5em;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation: load7 1.8s infinite ease-in-out;
+    animation: load7 1.8s infinite ease-in-out;
+}
+.loader {
+    color: teal;
+    font-size: 10px;
+    margin: 80px auto;
+    position: relative;
+    text-indent: -9999em;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+    content: '';
+    position: absolute;
+    top: 0;
+}
+.loader:before {
+    left: -3.5em;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+.loader:after {
+    left: 3.5em;
+}
+@-webkit-keyframes load7 {
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+    }
+    40% {
+        box-shadow: 0 2.5em 0 0;
+    }
+}
+@keyframes load7 {
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 2.5em 0 -1.3em;
+    }
+    40% {
+        box-shadow: 0 2.5em 0 0;
+    }
+}
+
+/*@keyframes rotate {*/
+/*    from {*/
+/*        !*начало анимации, стартовая точка с 0 градусов*!*/
+/*        transform: rotate(0deg) scale(1);*/
+/*    }*/
+/*    to {*/
+/*        !*конец анимации*!*/
+/*        transform: rotate(360deg) scale(1.4);*/
+/*    }*/
+/*}*/

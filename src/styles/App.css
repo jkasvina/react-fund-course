@@ -1,56 +1,87 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /*стили блока index.html*/
 #root {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .App {
-    width: 800px;
+  width: 800px;
 }
 
 .post {
-    display: flex;
-    padding: 15px;
-    border: 2px solid teal;
-    margin-top: 15px;
-    justify-content: space-between; /* переносит кнопку*/
-    align-items: center;
+  display: flex;
+  padding: 15px;
+  border: 2px solid teal;
+  margin-top: 15px;
+  justify-content: space-between; /* переносит кнопку*/
+  align-items: center;
 }
 
 .empty_list {
-    text-align: center;
+  text-align: center;
 }
 
 hr {
-    margin: 15px 0;
-    border: 1px solid teal;
+  margin: 15px 0;
+  border: 1px solid teal;
 }
 
 /*post - className <CSSTransition - элемента в компоненте Postlist*/
 .post-enter {
-    /*opacity: 0;*/
-    transform: translateX(-350px);
+  /*opacity: 0;*/
+  transform: translateX(-350px);
 }
 .post-enter-active {
-    transform: translateX(0px);
-    transition: all 500ms ease-in;
-    /*медленно растворяется*/
-    /*opacity: 1;*/
-    /*transition: opacity 500ms ease-in;*/
+  transform: translateX(0px);
+  transition: all 500ms ease-in;
+  /*медленно растворяется*/
+  /*opacity: 1;*/
+  /*transition: opacity 500ms ease-in;*/
 }
 .post-exit {
-    opacity: 1;
+  opacity: 1;
 }
 .post-exit-active {
-    transform: translateX(-350px);
-    transition: all 500ms ease-in;
-    /*медленно растворяется*/
-    /*opacity: 0;*/
-    /*transition: opacity 500ms ease-in;*/
+  transform: translateX(-350px);
+  transition: all 500ms ease-in;
+  /*медленно растворяется*/
+  /*opacity: 0;*/
+  /*transition: opacity 500ms ease-in;*/
+}
+
+.loader-box {
+  display: flex;
+  justify-content: center;
+  /*margin-top: 50px;*/
+}
+
+.span-box {
+  margin-top: 7px;
+  display: flex;
+  justify-content: center;
+}
+
+.span-page {
+  padding: 7px;
+  border-top: 1px solid teal;;
+  cursor: pointer;
+  color: teal;
+  /*margin-left: 1px;*/
+  /*margin-right: 1px;*/
+}
+
+.page-current {
+  border-top: 2px solid orange;
+  padding: 7px;
+  cursor: pointer;
+  color: orange;
+  font-weight: bold;
+  /*margin-left: 1px;*/
+  /*margin-right: 1px;*/
 }
